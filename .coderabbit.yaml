@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://storage.googleapis.com/coderabbit_public_assets/schema.v2.json
+# =============================================================================
+# CodeRabbit config for security-harness-consumer.
+# Explicit cross-repo links only (we do not rely on auto-discovery):
+#   - linked_repositories names the upstream service this app consumes.
+#   - code_guidelines pulls shared org standards from coderabbit-standards.
+# =============================================================================
+language: en-US
+
+reviews:
+  profile: chill
+  high_level_summary: true
+
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:
+      # Shared org standards live in a separate repo (read at its default branch).
+      - "coderabbit-demo/coderabbit-standards:guidelines/**/*.md"
+  automatic_repository_linking: false
+  linked_repositories:
+    - repository: "coderabbit-demo/security-harness"
+      instructions: >-
+        Upstream service this app consumes over HTTP (POST /api/pricing/quote and its shared
+        response shapes). Treat its exported endpoints, route paths, and response field names
+        (subtotalCents, totalCents) as the contract this repo depends on; flag call sites here
+        that would break if that contract changes upstream.
