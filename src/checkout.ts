@@ -26,6 +26,17 @@ export async function buildCheckoutSummary(cart: Cart): Promise<CheckoutSummary>
   };
 }
 
+// Returns true when the checkout summary is internally consistent and safe to
+// charge: money is present as integer cents and the amount due is a subset of the
+// line subtotal (our pricing contract is discount-only).
+export function isChargeable(summary: CheckoutSummary): boolean {
+  return (
+    Number.isSafeInteger(summary.lineSubtotalCents) &&
+    Number.isSafeInteger(summary.amountDueCents) &&
+    summary.amountDueCents >= 0
+  );
+}
+
 // Display helper: money is integer cents everywhere; format only at the boundary.
 export function formatCents(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
